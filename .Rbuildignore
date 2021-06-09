@@ -1,0 +1,12 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^data-raw$
+dev_history.R
+^dev$
+$run_dev.*
+^systemdynamics\.Rcheck$
+^systemdynamics.*\.tar\.gz$
+^systemdynamics.*\.tgz$
+^README\.Rmd$
+^LICENSE\.md$
+^CODE_OF_CONDUCT\.md$
