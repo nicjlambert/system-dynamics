@@ -12,7 +12,9 @@ app_ui <- function(request) {
     navbarPage("System Dynamics Model",
                tabPanel("About",
       mod_About_ui("About_ui_1")),
-               tabPanel("Output")
+               tabPanel("Output",
+      mod_Output_ui("Output_ui_1")
+      )
     )
   )
 }
