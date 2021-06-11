@@ -20,8 +20,8 @@
 ## 
 golem::fill_desc(
   pkg_name = "systemdynamics", # The Name of the package containing the App 
-  pkg_title = "PKG_TITLE", # The Title of the package containing the App 
-  pkg_description = "PKG_DESC.", # The Description of the package containing the App 
+  pkg_title = "System Dynamics", # The Title of the package containing the App 
+  pkg_description = "Web application built using {shiny}", # The Description of the package containing the App 
   author_first_name = "Nicholas", # Your First Name
   author_last_name = "Lambert", # Your Last Name
   author_email = "lambni85@gmail.com", # Your Email
