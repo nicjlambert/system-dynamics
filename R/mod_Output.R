@@ -1,6 +1,6 @@
 #' Output UI Function
 #'
-#' @description A shiny Module.
+#' @description A shiny Module for business logic
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
@@ -25,7 +25,10 @@ mod_Output_ui <- function(id){
         
       ),
       mainPanel(
-        plotOutput(ns("plot"))
+        shinycssloaders::withSpinner(
+          plotOutput(ns("plot")),
+          color = "#008080"
+        )
       )
     )
  
@@ -42,12 +45,10 @@ mod_Output_server <- function(id){
     
 
     ns <- session$ns
-  
-      
+
     
     data <- reactive({
       
-        
       # setup simulation times and time steps
       begin = 2017
       end = 2053
@@ -98,13 +99,11 @@ mod_Output_server <- function(id){
                                    method="euler"))
  
 
-
-
     })
     
     v <- reactiveValues(plot = NULL)
     
-    # Whenever the "runMod" button is pressed, run the model logic
+    # Whenever the "runMod" button is pressed, render the plot
     observeEvent(input$runMod, {
       
         v$plot <- ggplot2::ggplot()+
