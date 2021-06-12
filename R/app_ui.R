@@ -5,16 +5,19 @@
 #' @import shiny shinydashboard
 #' @noRd
 app_ui <- function(request) {
+ 
+  #shinyUI(htmlTemplate("R/app.html"))
+  
   
   bslib::bs_global_theme()
-  
+
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
-    
+
     thematic::thematic_shiny(),
-    
-    # Your application UI logic 
+
+    # Your application UI logic
     navbarPage(theme = bslib::bs_theme(primary = "teal", secondary = "orange", bg = "white", fg = "black", success = "green", version = 4),
                "System Dynamics Model",
                tabPanel("About",

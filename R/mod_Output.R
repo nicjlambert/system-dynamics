@@ -20,7 +20,8 @@ mod_Output_ui <- function(id){
         sliderInput(ns("aStandardGPProductivity"),  "Productivity", min=20, max=30, value=24, step=1),
         sliderInput(ns("aAverageGPCareerDuration"),  "Career Duration", min=20, max=50, value=40, step=10),     
         sliderInput(ns("aStandardGPWorkYear"),  "Work Year", min=200, max=360, value=250, step=10),
-        checkboxInput(ns("SystemPressureFlag"), "Allow response to system pressure", FALSE)
+        checkboxInput(ns("SystemPressureFlag"), "Allow response to system pressure", FALSE),
+        actionButton(inputId = ns("runMod"), "Run Model")
         
       ),
       mainPanel(
@@ -35,18 +36,24 @@ mod_Output_ui <- function(id){
 #'
 #' @noRd 
 mod_Output_server <- function(id){
+  
+  
   moduleServer( id, function(input, output, session){
     
+
     ns <- session$ns
+  
+      
     
     data <- reactive({
-      # setup simulation times and time steps
       
+        
+      # setup simulation times and time steps
       begin = 2017
       end = 2053
       timeStep = 1
       # create time vector
-      times <<- seq(begin, end, by = timeStep)
+      times <- seq(begin, end, by = timeStep)
       # create stocks vector with initial values. Inflows and outflows
       # can increase or decrease the stock's value over time
       stocks  <- c(
@@ -89,25 +96,33 @@ mod_Output_server <- function(id){
                                    func = systemdynamics::sdm, 
                                    parms=parms, 
                                    method="euler"))
-    })
-
-    output$plot <- renderPlot({
-
-      # reactive function that retrieves the current data
-      o <<- data()
-      
-      ggplot2::ggplot()+
-        ggplot2::geom_line(data=o, ggplot2::aes(time, sPopulation, color="Population"), size=1.15) +
-        ggplot2::geom_point() +
-        ggplot2::scale_y_continuous(labels = scales::comma) +
-        ggplot2::ylab("Population")+
-        ggplot2::xlab("Year") +
-        ggplot2::labs(color="")
-
-
-    })
  
-  })
+
+
+
+    })
+    
+    v <- reactiveValues(plot = NULL)
+    
+    # Whenever the "runMod" button is pressed, run the model logic
+    observeEvent(input$runMod, {
+      
+        v$plot <- ggplot2::ggplot()+
+          ggplot2::geom_line(data=o, ggplot2::aes(time, sPopulation, color="Population"), size=1.15) +
+          ggplot2::geom_point() +
+          ggplot2::scale_y_continuous(labels = scales::comma) +
+          ggplot2::ylab("Population")+
+          ggplot2::xlab("Year") +
+          ggplot2::labs(color="")
+
+      })
+      
+    output$plot <- renderPlot({
+      if (is.null(v$plot)) return()
+      v$plot
+    })
+})
+  
 }
     
 ## To be copied in the UI
